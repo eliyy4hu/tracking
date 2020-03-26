@@ -1,4 +1,4 @@
-package com.example.tracking
+package com.example.tracking.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -11,13 +11,16 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import androidx.core.view.children
+import com.example.tracking.Habit
+import com.example.tracking.R
 import kotlinx.android.synthetic.main.add_or_edit_fragment.*
 
 
 class AddOrEditFragment(val habit: Habit) : Fragment(), AdapterView.OnItemSelectedListener {
 
     companion object {
-        fun newInstance(habit: Habit) = AddOrEditFragment(habit)
+        fun newInstance(habit: Habit) =
+            AddOrEditFragment(habit)
 
         const val HABIT: String = "habit_key"
         const val HABIT_INDEX: String = "habit_index_key"

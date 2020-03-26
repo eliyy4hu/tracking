@@ -1,4 +1,4 @@
-package com.example.tracking
+package com.example.tracking.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tracking.Habit
+import com.example.tracking.HabitListAdapter
+import com.example.tracking.R
+import com.example.tracking.RecyclerViewClickListener
 import kotlinx.android.synthetic.main.habit_list.*
 
 
@@ -21,7 +25,10 @@ class HabitListFragment(val habits: List<Habit>, val prioritiesStrings: Array<St
 
     companion object {
         fun newInstance(habits: List<Habit>, prioritiesStrings: Array<String>) =
-            HabitListFragment(habits, prioritiesStrings)
+            HabitListFragment(
+                habits,
+                prioritiesStrings
+            )
 
         public const val FRAGMENT_TAG = "habit_list_fragment_tag"
     }
@@ -42,7 +49,11 @@ class HabitListFragment(val habits: List<Habit>, val prioritiesStrings: Array<St
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewManager = LinearLayoutManager(activity)
-        viewAdapter = HabitListAdapter(habits, this, prioritiesStrings)
+        viewAdapter = HabitListAdapter(
+            habits,
+            this,
+            prioritiesStrings
+        )
         habit_list.adapter = viewAdapter
         recyclerView = habit_list.apply {
             setHasFixedSize(true)

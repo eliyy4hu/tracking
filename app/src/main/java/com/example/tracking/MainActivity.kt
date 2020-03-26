@@ -1,20 +1,19 @@
 package com.example.tracking
 
 import android.os.Bundle
-import android.view.Gravity
-import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import com.example.tracking.fragments.*
 import kotlinx.android.synthetic.main.nav_bar.*
-import java.io.File
 
 
-class MainActivity() : AppCompatActivity(), AddOrEditFragmentCallback, HabitListPagesCallback,
+class MainActivity() : AppCompatActivity(),
+    AddOrEditFragmentCallback,
+    HabitListPagesCallback,
     HabitListCallback {
     var habits = mutableListOf<Habit>(
         Habit("GOOD", "", 0, 0, ""),
@@ -132,7 +131,8 @@ class MainActivity() : AppCompatActivity(), AddOrEditFragmentCallback, HabitList
     override fun onEdit(habit: Habit) {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.arrow)
 
-        val addOrEditFragment = AddOrEditFragment(habit)
+        val addOrEditFragment =
+            AddOrEditFragment(habit)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, addOrEditFragment)

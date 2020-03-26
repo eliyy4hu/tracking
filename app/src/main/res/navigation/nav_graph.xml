@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/habitListPagesFragment"
-        android:name="com.example.tracking.HabitListPagesFragment"
+        android:name="com.example.tracking.fragments.HabitListPagesFragment"
         android:label="habit_pages_fragment"
         tools:layout="@layout/habit_pages_fragment" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/addOrEditFragment2"
-        android:name="com.example.tracking.AddOrEditFragment"
+        android:name="com.example.tracking.fragments.AddOrEditFragment"
         android:label="AddOrEditFragment" >
         <argument
             android:name="habit"

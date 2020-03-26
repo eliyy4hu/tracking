@@ -1,13 +1,13 @@
-package com.example.tracking
+package com.example.tracking.fragments
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import com.example.tracking.R
 
 
 class AboutFragment : Fragment() {
@@ -23,7 +23,6 @@ class AboutFragment : Fragment() {
 
     }
 
-    private lateinit var viewModel: AboutViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

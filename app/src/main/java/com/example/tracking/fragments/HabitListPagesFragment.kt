@@ -1,4 +1,4 @@
-package com.example.tracking
+package com.example.tracking.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -7,14 +7,20 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.add_or_edit_fragment.*
+import com.example.tracking.Habit
+import com.example.tracking.HabitsPagerAdapter
+import com.example.tracking.R
 import kotlinx.android.synthetic.main.habit_pages_fragment.*
 
 
 class HabitListPagesFragment(var habits: MutableList<Habit>, val prioritiesStrings:Array<String>) : Fragment() {
     lateinit var callback: HabitListPagesCallback
     companion object {
-        fun newInstance(habits: MutableList<Habit>,prioritiesStrings:Array<String>) = HabitListPagesFragment(habits,prioritiesStrings)
+        fun newInstance(habits: MutableList<Habit>, prioritiesStrings:Array<String>) =
+            HabitListPagesFragment(
+                habits,
+                prioritiesStrings
+            )
         const val HABIT: String = "habit_key"
     }
 
@@ -43,7 +49,11 @@ class HabitListPagesFragment(var habits: MutableList<Habit>, val prioritiesStrin
         add_habit_btn.setOnClickListener { createNewHabit(it) }
 
         if (habits_view_pager.adapter == null) {
-            habits_view_pager.adapter = HabitsPagerAdapter(childFragmentManager, habits,prioritiesStrings)
+            habits_view_pager.adapter = HabitsPagerAdapter(
+                childFragmentManager,
+                habits,
+                prioritiesStrings
+            )
             habits_pager_tabLayout.setupWithViewPager(habits_view_pager)
             habits_pager_tabLayout.getTabAt(0)!!.text = "good"
             habits_pager_tabLayout.getTabAt(1)!!.text = "bad"
