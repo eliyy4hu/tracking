@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.activity_second_activity.*
@@ -22,24 +23,24 @@ class HabitListPagesFragment(var habits: MutableList<Habit>, val prioritiesStrin
         callback = activity as HabitListPagesCallback
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        callback.onMenuClicked()
+        return super.onOptionsItemSelected(item)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.habit_pages_fragment, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         add_habit_btn.setOnClickListener { createNewHabit(it) }
-//        if (arguments != null) {
-//            val habit = arguments!!.getParcelable<Habit>(HABIT)
-//            if (habit != null) {
-//                val habitToReplace = habits.indexOfFirst { it.id == habit.id }
-//                habits[habitToReplace] = habit
-//            }
-//        }
 
         if (habits_view_pager.adapter == null) {
             habits_view_pager.adapter = HabitsPagerAdapter(childFragmentManager, habits,prioritiesStrings)
@@ -65,4 +66,5 @@ class HabitListPagesFragment(var habits: MutableList<Habit>, val prioritiesStrin
 }
 interface HabitListPagesCallback{
     fun onCreateHabit()
+    fun onMenuClicked()
 }

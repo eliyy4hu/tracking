@@ -47,11 +47,14 @@ class AddOrEditFragment(val habit: Habit) : Fragment(), AdapterView.OnItemSelect
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.activity_second_activity, container, false)
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        callback.onBack()
         return super.onOptionsItemSelected(item)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -97,4 +100,5 @@ class AddOrEditFragment(val habit: Habit) : Fragment(), AdapterView.OnItemSelect
 
 interface AddOrEditFragmentCallback {
     fun onSave(habit: Habit)
+    fun onBack()
 }

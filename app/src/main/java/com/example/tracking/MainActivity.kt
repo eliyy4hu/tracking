@@ -8,8 +8,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import kotlinx.android.synthetic.main.nav_bar.*
+import java.io.File
 
 
 class MainActivity() : AppCompatActivity(), AddOrEditFragmentCallback, HabitListPagesCallback,
@@ -23,6 +25,7 @@ class MainActivity() : AppCompatActivity(), AddOrEditFragmentCallback, HabitList
     lateinit var navController: NavController
     lateinit var prioritiesStrings: Array<String>
     private lateinit var drawerToggle: ActionBarDrawerToggle
+    private var isOpen: Boolean = false
 
 
     companion object {
@@ -41,8 +44,9 @@ class MainActivity() : AppCompatActivity(), AddOrEditFragmentCallback, HabitList
         )
         navigation_drawer_layout.addDrawerListener(drawerToggle)
         supportActionBar?.title = "Ha! Bits"
-        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        //supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_launcher_background)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_burger)
 
 
         //navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -63,10 +67,16 @@ class MainActivity() : AppCompatActivity(), AddOrEditFragmentCallback, HabitList
 
     }
 
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        navigation_drawer_layout.openDrawer(GravityCompat.START)
-        return super.onOptionsItemSelected(item)
+    private fun openRootFragment(fragment: Fragment) {
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_burger)
+        clearBackStack()
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.fragment_container,
+                fragment,
+                HABIT_PAGES_FRAGMENT_TAG
+            )
+            .commit()
     }
 
 
@@ -80,15 +90,14 @@ class MainActivity() : AppCompatActivity(), AddOrEditFragmentCallback, HabitList
         habits[habitToReplace] = habit
         val habitListPagesFragment: HabitListPagesFragment =
             HabitListPagesFragment.newInstance(habits, prioritiesStrings)
+        openRootFragment(fragment = habitListPagesFragment)
+    }
 
-        clearBackStack()
-        supportFragmentManager.beginTransaction()
-            .replace(
-                R.id.fragment_container,
-                habitListPagesFragment,
-                HABIT_PAGES_FRAGMENT_TAG
-            )
-            .commit()
+    override fun onBack() {
+
+        val habitListPagesFragment: HabitListPagesFragment =
+            HabitListPagesFragment.newInstance(habits, prioritiesStrings)
+        openRootFragment(habitListPagesFragment)
     }
 
     private fun clearBackStack() {
@@ -102,6 +111,8 @@ class MainActivity() : AppCompatActivity(), AddOrEditFragmentCallback, HabitList
         habits.add(habit)
         val addOrEditFragment = AddOrEditFragment.newInstance(habit)
         //(activity!! as MainActivity).navController.navigate(R.id.addOrEditFragment2)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.arrow)
+
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, addOrEditFragment)
@@ -110,7 +121,17 @@ class MainActivity() : AppCompatActivity(), AddOrEditFragmentCallback, HabitList
 
     }
 
+    override fun onMenuClicked() {
+        isOpen = navigation_drawer_layout.isDrawerOpen(navigation_drawer)
+        if (!isOpen)
+            navigation_drawer_layout.openDrawer(GravityCompat.START)
+        else
+            navigation_drawer_layout.closeDrawer(GravityCompat.START)
+    }
+
     override fun onEdit(habit: Habit) {
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.arrow)
+
         val addOrEditFragment = AddOrEditFragment(habit)
         supportFragmentManager
             .beginTransaction()
@@ -122,27 +143,14 @@ class MainActivity() : AppCompatActivity(), AddOrEditFragmentCallback, HabitList
     fun home(item: MenuItem) {
         val habitListPagesFragment: HabitListPagesFragment =
             HabitListPagesFragment.newInstance(habits, prioritiesStrings)
-        clearBackStack()
-        supportFragmentManager.beginTransaction()
-            .replace(
-                R.id.fragment_container,
-                habitListPagesFragment,
-                HABIT_PAGES_FRAGMENT_TAG
-            )
-            .commit()
+        openRootFragment(habitListPagesFragment)
         navigation_drawer_layout.closeDrawers()
+
     }
 
     fun about(item: MenuItem) {
         val aboutFragment = AboutFragment.newInstance()
-        clearBackStack()
-        supportFragmentManager.beginTransaction()
-            .replace(
-                R.id.fragment_container,
-                aboutFragment,
-                HABIT_PAGES_FRAGMENT_TAG
-            )
-            .commit()
+        openRootFragment(aboutFragment)
         navigation_drawer_layout.closeDrawers()
     }
 
