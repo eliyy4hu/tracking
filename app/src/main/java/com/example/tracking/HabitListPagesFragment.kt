@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.activity_second_activity.*
+import kotlinx.android.synthetic.main.add_or_edit_fragment.*
 import kotlinx.android.synthetic.main.habit_pages_fragment.*
 
 

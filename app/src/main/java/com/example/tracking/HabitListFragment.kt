@@ -1,7 +1,6 @@
 package com.example.tracking
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,8 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.nav_bar.*
+import kotlinx.android.synthetic.main.habit_list.*
 
 
 class HabitListFragment(val habits: List<Habit>, val prioritiesStrings: Array<String>) : Fragment(),
@@ -38,7 +36,7 @@ class HabitListFragment(val habits: List<Habit>, val prioritiesStrings: Array<St
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.activity_main, container, false)
+        return inflater.inflate(R.layout.habit_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

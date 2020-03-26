@@ -11,7 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import androidx.core.view.children
-import kotlinx.android.synthetic.main.activity_second_activity.*
+import kotlinx.android.synthetic.main.add_or_edit_fragment.*
 
 
 class AddOrEditFragment(val habit: Habit) : Fragment(), AdapterView.OnItemSelectedListener {
@@ -48,7 +48,7 @@ class AddOrEditFragment(val habit: Habit) : Fragment(), AdapterView.OnItemSelect
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.activity_second_activity, container, false)
+        return inflater.inflate(R.layout.add_or_edit_fragment, container, false)
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         callback.onBack()

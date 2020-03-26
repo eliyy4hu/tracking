@@ -5,7 +5,7 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_second_activity.*
+import kotlinx.android.synthetic.main.add_or_edit_fragment.*
 
 class HabitViewHolder(
     itemView: View,
