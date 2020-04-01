@@ -2,40 +2,62 @@ package com.example.tracking.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tracking.Habit
-import com.example.tracking.HabitListAdapter
-import com.example.tracking.R
-import com.example.tracking.RecyclerViewClickListener
+import com.example.tracking.*
+import com.example.tracking.viewModels.HabitListViewModel
+import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.habit_list.*
 
 
-class HabitListFragment(val habits: List<Habit>, val prioritiesStrings: Array<String>) : Fragment(),
+class HabitListFragment() : Fragment(),
     RecyclerViewClickListener {
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var prioritiesStrings: Array<String>
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var callback: HabitListCallback
+    private lateinit var viewModel: HabitListViewModel
 
     companion object {
-        fun newInstance(habits: List<Habit>, prioritiesStrings: Array<String>) =
-            HabitListFragment(
-                habits,
-                prioritiesStrings
-            )
+        fun newInstance(habitType: Int, prioritiesStrings: Array<String>): HabitListFragment {
+            var fr = HabitListFragment()
+            var bundle = Bundle()
+            bundle.putInt(HABIT_TYPE_KEY, habitType)
+            bundle.putStringArray(PRIORITIES_STRINGS, prioritiesStrings)
+            fr.arguments = bundle
+            return fr
+        }
 
-        public const val FRAGMENT_TAG = "habit_list_fragment_tag"
+        private const val HABIT_TYPE_KEY = "HABIT_TYPE_KEY"
+        private const val PRIORITIES_STRINGS = "PR_STRINGS"
+
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = activity as HabitListCallback
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return HabitListViewModel(arguments!!.getInt(HABIT_TYPE_KEY)) as T
+            }
+        }).get(HabitListViewModel::class.java)
+        prioritiesStrings = arguments!!.getStringArray(PRIORITIES_STRINGS)!!
     }
 
 
@@ -50,7 +72,7 @@ class HabitListFragment(val habits: List<Habit>, val prioritiesStrings: Array<St
         super.onViewCreated(view, savedInstanceState)
         viewManager = LinearLayoutManager(activity)
         viewAdapter = HabitListAdapter(
-            habits,
+            mutableListOf(),
             this,
             prioritiesStrings
         )
@@ -60,16 +82,41 @@ class HabitListFragment(val habits: List<Habit>, val prioritiesStrings: Array<St
             layoutManager = viewManager
             adapter = viewAdapter
         }
+        viewModel.habits.observe(viewLifecycleOwner, Observer { list ->
+            updateAdapter(list)
+        })
+        viewModel.load()
+        setSearchListener()
+        priorities_toggle.setOnClickListener { onPrioritiesToggle(it) }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
+    private fun onPrioritiesToggle(it: View) {
+        val checkBox = it as CheckBox
+        viewModel.setPriorityOrder(checkBox.isChecked)
     }
+
+    private fun setSearchListener() {
+        search_field.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.setNameFilter(p0.toString())
+            }
+        })
+    }
+
+    private fun updateAdapter(habits: List<Habit>) {
+        (viewAdapter as HabitListAdapter).habits = habits.toMutableList()
+        viewAdapter.notifyDataSetChanged()
+    }
+
 
     override fun recyclerViewListClicked(v: View?, position: Int) {
-        callback.onEdit(habits[position])
-
+        callback.onEdit((viewAdapter as HabitListAdapter).habits[position])
     }
 
 }

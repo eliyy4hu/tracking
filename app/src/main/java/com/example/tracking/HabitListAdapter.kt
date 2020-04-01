@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class HabitListAdapter(
-    private val habits: List<Habit>,
+     var habits: MutableList<Habit>,
     private val recyclerViewClickListener: RecyclerViewClickListener,
     private val prioritiesStrings:Array<String>
 

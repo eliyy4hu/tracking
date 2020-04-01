@@ -13,15 +13,14 @@ import com.example.tracking.R
 import kotlinx.android.synthetic.main.habit_pages_fragment.*
 
 
-class HabitListPagesFragment(var habits: MutableList<Habit>, val prioritiesStrings:Array<String>) : Fragment() {
+class HabitListPagesFragment() : Fragment() {
     lateinit var callback: HabitListPagesCallback
+
     companion object {
-        fun newInstance(habits: MutableList<Habit>, prioritiesStrings:Array<String>) =
+        fun newInstance() =
             HabitListPagesFragment(
-                habits,
-                prioritiesStrings
             )
-        const val HABIT: String = "habit_key"
+
     }
 
     override fun onAttach(context: Context) {
@@ -51,8 +50,8 @@ class HabitListPagesFragment(var habits: MutableList<Habit>, val prioritiesStrin
         if (habits_view_pager.adapter == null) {
             habits_view_pager.adapter = HabitsPagerAdapter(
                 childFragmentManager,
-                habits,
-                prioritiesStrings
+                resources.getStringArray(R.array.priorities)
+
             )
             habits_pager_tabLayout.setupWithViewPager(habits_view_pager)
             habits_pager_tabLayout.getTabAt(0)!!.text = "good"
@@ -69,12 +68,9 @@ class HabitListPagesFragment(var habits: MutableList<Habit>, val prioritiesStrin
         callback.onCreateHabit()
 
     }
-
-
-
-
 }
-interface HabitListPagesCallback{
+
+interface HabitListPagesCallback {
     fun onCreateHabit()
     fun onMenuClicked()
 }

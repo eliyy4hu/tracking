@@ -15,11 +15,7 @@ class MainActivity() : AppCompatActivity(),
     AddOrEditFragmentCallback,
     HabitListPagesCallback,
     HabitListCallback {
-    var habits = mutableListOf<Habit>(
-        Habit("GOOD", "", 0, 0, ""),
-        Habit("BAD1", "", 0, 1, ""),
-        Habit("BAD2", "", 0, 1, "")
-    )
+
 
     lateinit var navController: NavController
     lateinit var prioritiesStrings: Array<String>
@@ -35,25 +31,20 @@ class MainActivity() : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.nav_bar)
-        drawerToggle = ActionBarDrawerToggle(
-            this,
-            navigation_drawer_layout,
-            R.string.open_second_activity,
-            R.string.open_second_activity
-        )
-        navigation_drawer_layout.addDrawerListener(drawerToggle)
+//        drawerToggle = ActionBarDrawerToggle(
+//            this,
+//            navigation_drawer_layout,
+//            R.string.open_second_activity,
+//            R.string.open_second_activity
+//        )
+        //navigation_drawer_layout.addDrawerListener(drawerToggle)
         supportActionBar?.title = "Ha! Bits"
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_burger)
-
-
-        //navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        prioritiesStrings = resources.getStringArray(R.array.priorities)
-
         if (savedInstanceState == null) {
             val habitListPagesFragment: HabitListPagesFragment =
-                HabitListPagesFragment.newInstance(habits, prioritiesStrings)
+                HabitListPagesFragment.newInstance()
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.fragment_container,
@@ -81,21 +72,21 @@ class MainActivity() : AppCompatActivity(),
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArray(HABITS, habits.toTypedArray())
+
+        outState.putParcelableArray(HABITS, HabitsProvider.GetHabits().toTypedArray())
     }
 
     override fun onSave(habit: Habit) {
-        val habitToReplace = habits.indexOfFirst { it.id == habit.id }
-        habits[habitToReplace] = habit
+        HabitsProvider.SetHabitById(habit)
         val habitListPagesFragment: HabitListPagesFragment =
-            HabitListPagesFragment.newInstance(habits, prioritiesStrings)
+            HabitListPagesFragment.newInstance()
         openRootFragment(fragment = habitListPagesFragment)
     }
 
     override fun onBack() {
 
         val habitListPagesFragment: HabitListPagesFragment =
-            HabitListPagesFragment.newInstance(habits, prioritiesStrings)
+            HabitListPagesFragment.newInstance()
         openRootFragment(habitListPagesFragment)
     }
 
@@ -107,9 +98,8 @@ class MainActivity() : AppCompatActivity(),
 
     override fun onCreateHabit() {
         val habit = Habit()
-        habits.add(habit)
+        HabitsProvider.AddHabit(habit)
         val addOrEditFragment = AddOrEditFragment.newInstance(habit)
-        //(activity!! as MainActivity).navController.navigate(R.id.addOrEditFragment2)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.arrow)
 
         supportFragmentManager
@@ -132,7 +122,7 @@ class MainActivity() : AppCompatActivity(),
         supportActionBar?.setHomeAsUpIndicator(R.drawable.arrow)
 
         val addOrEditFragment =
-            AddOrEditFragment(habit)
+            AddOrEditFragment.newInstance(habit)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, addOrEditFragment)
@@ -142,7 +132,7 @@ class MainActivity() : AppCompatActivity(),
 
     fun home(item: MenuItem) {
         val habitListPagesFragment: HabitListPagesFragment =
-            HabitListPagesFragment.newInstance(habits, prioritiesStrings)
+            HabitListPagesFragment.newInstance()
         openRootFragment(habitListPagesFragment)
         navigation_drawer_layout.closeDrawers()
 
