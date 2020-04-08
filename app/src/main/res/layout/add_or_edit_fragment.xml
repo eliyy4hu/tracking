@@ -25,7 +25,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name:" />
+                android:text="@string/name_label" />
 
             <EditText
                 android:id="@+id/name"
@@ -62,7 +62,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Priority:" />
+                android:text="@string/priority_label" />
 
             <Spinner
                 android:id="@+id/priority"
@@ -80,7 +80,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Type:" />
+                android:text="@string/type_label" />
 
             <RadioGroup
                 android:id="@+id/type"
@@ -91,12 +91,12 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="good" />
+                    android:text="@string/rb_good_label" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="bad" />
+                    android:text="@string/rb_bad_label" />
 
             </RadioGroup>
 
@@ -111,7 +111,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Frequency:" />
+                android:text="@string/frequency_label" />
 
             <EditText
                 android:id="@+id/frequency"
@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:layout_marginLeft="100dp"
-            android:text="save" />
+            android:text="@string/btn_save_label" />
     </LinearLayout>
 <!--
 </layout>-->

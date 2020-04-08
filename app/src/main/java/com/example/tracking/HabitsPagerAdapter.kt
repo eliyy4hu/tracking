@@ -7,7 +7,7 @@ import com.example.tracking.fragments.HabitListFragment
 
 class HabitsPagerAdapter(
     childFragmentManager: FragmentManager,
-    val prioritiesStrings: Array<String>
+    private val prioritiesStrings: Array<String>
 ) :
     FragmentStatePagerAdapter(childFragmentManager) {
     override fun getItem(position: Int): Fragment {

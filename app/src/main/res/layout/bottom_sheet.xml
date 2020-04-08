@@ -15,7 +15,7 @@
         android:layout_height="80dp"
         android:background="@color/colorAccent"
         android:gravity="center"
-        android:text="Filters"
+        android:text="@string/filters_label"
         android:textColor="@android:color/white" />
 
 
@@ -30,7 +30,7 @@
         android:id="@+id/priorities_toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="by priorities" />
+        android:text="@string/priority_sort_label" />
 
 
 </LinearLayout>

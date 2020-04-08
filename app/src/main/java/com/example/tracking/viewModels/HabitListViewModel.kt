@@ -1,43 +1,50 @@
 package com.example.tracking.viewModels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import androidx.lifecycle.Observer
 import com.example.tracking.Habit
-import com.example.tracking.HabitsProvider
+import com.example.tracking.dataBase.providers.IHabitProvider
 import java.util.*
 
-class HabitListViewModel(private val habitType: Int) : ViewModel() {
+class HabitListViewModel(
+    private val habitType: Int,
+    private val viewLifecycleOwner: LifecycleOwner,
+    private val habitProvider: IHabitProvider
+) :
+    ViewModel() {
     private val mutableHabits: MutableLiveData<List<Habit>> = MutableLiveData()
     val habits: LiveData<List<Habit>> = mutableHabits
     var namePrefix = ""
     var orderByPriority: Boolean = false
 
     init {
-        load()
+        habitProvider.habits.observe(viewLifecycleOwner, Observer { habits ->
+            updateHabits(habits)
+        })
+
     }
 
-    public fun load() {
-        var filtered = HabitsProvider.GetHabits()
-            .filter {
+    private fun updateHabits(habits: MutableList<Habit>?) {
+        var filtered = habits
+            ?.filter {
                 it.type == habitType &&
                         it.name.toLowerCase(Locale.ROOT).startsWith(
                             namePrefix.toLowerCase(Locale.ROOT)
                         )
             }
         if (orderByPriority)
-            filtered = filtered.sortedBy { it.priority }
+            filtered = filtered?.sortedBy { it.priority }
         mutableHabits.postValue(filtered)
-
     }
+
 
     fun setNameFilter(namePrefix: String) {
         this.namePrefix = namePrefix
-        load()
+        updateHabits(mutableHabits.value?.toMutableList())
     }
 
     fun setPriorityOrder(checked: Boolean) {
         orderByPriority = checked
-        load()
+        updateHabits(mutableHabits.value?.toMutableList())
     }
 }

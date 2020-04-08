@@ -16,15 +16,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.tracking.Habit
 import com.example.tracking.R
+import com.example.tracking.dataBase.providers.HabitsProvider
 import com.example.tracking.viewModels.AddOrEditViewModel
-import com.example.tracking.viewModels.HabitListViewModel
 import kotlinx.android.synthetic.main.add_or_edit_fragment.*
 
 
 class AddOrEditFragment() : Fragment(), AdapterView.OnItemSelectedListener {
 
     companion object {
-        fun newInstance(habit: Habit): AddOrEditFragment {
+        fun newInstance(habit: Habit?): AddOrEditFragment {
             val fr = AddOrEditFragment()
             val bundle = Bundle()
             bundle.putParcelable(HABIT_KEY, habit)
@@ -33,14 +33,11 @@ class AddOrEditFragment() : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
         private const val HABIT_KEY: String = "habit_key"
-
     }
 
     private lateinit var viewModel: AddOrEditViewModel
     lateinit var callback: AddOrEditFragmentCallback
     lateinit var types: List<String>
-
-
     private fun render(habit: Habit) {
         name.setText(habit.name)
         description.setText(habit.description)
@@ -57,9 +54,12 @@ class AddOrEditFragment() : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        var habit = arguments!!.getParcelable<Habit>(HABIT_KEY)
+        if (habit == null)
+            habit = Habit()
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return AddOrEditViewModel(arguments!!.getParcelable<Habit>(HABIT_KEY)!!) as T
+                return AddOrEditViewModel(habit, HabitsProvider) as T
             }
         }).get(AddOrEditViewModel::class.java)
     }
@@ -76,7 +76,6 @@ class AddOrEditFragment() : Fragment(), AdapterView.OnItemSelectedListener {
         callback.onBack()
         return super.onOptionsItemSelected(item)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -96,16 +95,9 @@ class AddOrEditFragment() : Fragment(), AdapterView.OnItemSelectedListener {
         viewModel.habit.observe(viewLifecycleOwner, Observer { habit ->
             render(habit)
         })
-        //viewModel.setHabit(habit)
-
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -121,12 +113,12 @@ class AddOrEditFragment() : Fragment(), AdapterView.OnItemSelectedListener {
         viewModel.habit.value!!.frequency = frequency.text.toString()
         viewModel.habit.value!!.description = description.text.toString()
         viewModel.habit.value!!.name = name.text.toString()
-        callback.onSave(viewModel.habit.value!!)
+        viewModel.saveHabit()
+        callback.onSave()
     }
-
 }
 
 interface AddOrEditFragmentCallback {
-    fun onSave(habit: Habit)
+    fun onSave()
     fun onBack()
 }

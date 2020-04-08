@@ -6,7 +6,7 @@ import java.util.*
 
 class Habit : Parcelable {
     constructor()
-    public constructor(
+    constructor(
         name: String,
         description: String,
         priority: Int,
@@ -22,12 +22,12 @@ class Habit : Parcelable {
 
 
 
-    public var name: String = ""
-    public var description: String = ""
-    public var priority: Int = 0
-    public var type: Int = 0
-    public var frequency: String = ""
-    public val id: UUID = UUID.randomUUID()
+    var name: String = ""
+    var description: String = ""
+    var priority: Int = 0
+    var type: Int = 0
+    var frequency: String = ""
+    var id: UUID = UUID.randomUUID()
 
     constructor(parcel: Parcel) : this() {
         name = parcel.readString()?: ""

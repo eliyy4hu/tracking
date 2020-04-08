@@ -9,10 +9,9 @@ import kotlinx.android.synthetic.main.add_or_edit_fragment.*
 
 class HabitViewHolder(
     itemView: View,
-    var recyclerViewClickListener: RecyclerViewClickListener, var prioritiesStrings: Array<String>
+    private var recyclerViewClickListener: RecyclerViewClickListener,
+    var prioritiesStrings: Array<String>
 ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-
-
     private val nameText: TextView = itemView.findViewById(R.id.name)
     private val descriptionText: TextView = itemView.findViewById(R.id.description)
     private val priorityText: TextView = itemView.findViewById(R.id.priority)

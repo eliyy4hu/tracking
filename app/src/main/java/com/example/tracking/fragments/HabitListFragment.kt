@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracking.*
+import com.example.tracking.dataBase.providers.HabitsProvider
 import com.example.tracking.viewModels.HabitListViewModel
 import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.habit_list.*
@@ -22,7 +23,6 @@ import kotlinx.android.synthetic.main.habit_list.*
 
 class HabitListFragment() : Fragment(),
     RecyclerViewClickListener {
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var prioritiesStrings: Array<String>
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -32,8 +32,8 @@ class HabitListFragment() : Fragment(),
 
     companion object {
         fun newInstance(habitType: Int, prioritiesStrings: Array<String>): HabitListFragment {
-            var fr = HabitListFragment()
-            var bundle = Bundle()
+            val fr = HabitListFragment()
+            val bundle = Bundle()
             bundle.putInt(HABIT_TYPE_KEY, habitType)
             bundle.putStringArray(PRIORITIES_STRINGS, prioritiesStrings)
             fr.arguments = bundle
@@ -42,7 +42,6 @@ class HabitListFragment() : Fragment(),
 
         private const val HABIT_TYPE_KEY = "HABIT_TYPE_KEY"
         private const val PRIORITIES_STRINGS = "PR_STRINGS"
-
     }
 
     override fun onAttach(context: Context) {
@@ -52,11 +51,6 @@ class HabitListFragment() : Fragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return HabitListViewModel(arguments!!.getInt(HABIT_TYPE_KEY)) as T
-            }
-        }).get(HabitListViewModel::class.java)
         prioritiesStrings = arguments!!.getStringArray(PRIORITIES_STRINGS)!!
     }
 
@@ -70,6 +64,15 @@ class HabitListFragment() : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return HabitListViewModel(
+                    arguments!!.getInt(HABIT_TYPE_KEY),
+                    viewLifecycleOwner,
+                    HabitsProvider
+                ) as T
+            }
+        }).get(HabitListViewModel::class.java)
         viewManager = LinearLayoutManager(activity)
         viewAdapter = HabitListAdapter(
             mutableListOf(),
@@ -85,7 +88,6 @@ class HabitListFragment() : Fragment(),
         viewModel.habits.observe(viewLifecycleOwner, Observer { list ->
             updateAdapter(list)
         })
-        viewModel.load()
         setSearchListener()
         priorities_toggle.setOnClickListener { onPrioritiesToggle(it) }
     }
@@ -114,11 +116,9 @@ class HabitListFragment() : Fragment(),
         viewAdapter.notifyDataSetChanged()
     }
 
-
     override fun recyclerViewListClicked(v: View?, position: Int) {
         callback.onEdit((viewAdapter as HabitListAdapter).habits[position])
     }
-
 }
 
 interface HabitListCallback {

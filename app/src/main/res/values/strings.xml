@@ -4,6 +4,17 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="about">ABOUT</string>
+    <string name="name_label">Name:</string>
+    <string name="rb_good_label">good</string>
+    <string name="rb_bad_label">bad</string>
+    <string name="btn_save_label">save</string>
+    <string name="filters_label">Filters</string>
+    <string name="priority_sort_label">by priorities</string>
+    <string name="description_label">Description:</string>
+    <string name="priority_label">Priority:</string>
+    <string name="type_label">Type:</string>
+    <string name="frequency_label">Frequency:</string>
 
 
 </resources>

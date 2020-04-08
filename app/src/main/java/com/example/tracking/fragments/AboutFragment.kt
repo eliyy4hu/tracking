@@ -9,20 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.tracking.R
 
-
 class AboutFragment : Fragment() {
-
     companion object {
         fun newInstance() = AboutFragment()
     }
-    private lateinit var callback: HabitListPagesCallback
 
+    private lateinit var callback: HabitListPagesCallback
     override fun onAttach(context: Context) {
         callback = activity as HabitListPagesCallback
         super.onAttach(context)
-
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,9 +32,4 @@ class AboutFragment : Fragment() {
         callback.onMenuClicked()
         return super.onOptionsItemSelected(item)
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
 }
