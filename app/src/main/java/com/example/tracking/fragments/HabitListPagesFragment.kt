@@ -52,7 +52,7 @@ class HabitListPagesFragment() : Fragment() {
                 override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                     return HabitListViewModel(
 
-                        viewLifecycleOwner,
+                        activity!!,
                         HabitsProvider
                     ) as T
                 }

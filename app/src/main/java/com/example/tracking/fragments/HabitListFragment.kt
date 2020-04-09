@@ -69,7 +69,7 @@ class HabitListFragment() : Fragment(),
             viewModel = ViewModelProvider(activity!!, object : ViewModelProvider.Factory {
                 override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                     return HabitListViewModel(
-                        viewLifecycleOwner,
+                        activity!!,
                         HabitsProvider
                     ) as T
                 }
@@ -88,11 +88,11 @@ class HabitListFragment() : Fragment(),
         }
         val type = arguments!!.getInt(HABIT_TYPE_KEY);
         if (type == 0) {
-            viewModel.habitsType0.observe(viewLifecycleOwner, Observer { list ->
+            viewModel.habitsType0.observe(activity!!, Observer { list ->
                 updateAdapter(list)
             })
         } else {
-            viewModel.habitsType1.observe(viewLifecycleOwner, Observer { list ->
+            viewModel.habitsType1.observe(activity!!, Observer { list ->
                 updateAdapter(list)
             })
         }
