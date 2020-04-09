@@ -2,10 +2,13 @@ package com.example.tracking.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +17,7 @@ import com.example.tracking.HabitsPagerAdapter
 import com.example.tracking.R
 import com.example.tracking.dataBase.dbProviders.HabitsProvider
 import com.example.tracking.viewModels.HabitListViewModel
+import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.habit_pages_fragment.*
 
 
@@ -69,6 +73,27 @@ class HabitListPagesFragment() : Fragment() {
             habits_pager_tabLayout.getTabAt(0)!!.text = "good"
             habits_pager_tabLayout.getTabAt(1)!!.text = "bad"
         }
+        setSearchListener()
+        priorities_toggle.setOnClickListener { onPrioritiesToggle(it) }
+
+
+    }
+    private fun setSearchListener() {
+        search_field.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.setNameFilter(p0.toString())
+            }
+        })
+    }
+    private fun onPrioritiesToggle(it: View) {
+        val checkBox = it as CheckBox
+        viewModel.setPriorityOrder(checkBox.isChecked)
     }
 
     private fun createNewHabit(view: View) {

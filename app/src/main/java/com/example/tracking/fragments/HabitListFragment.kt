@@ -97,28 +97,11 @@ class HabitListFragment() : Fragment(),
             })
         }
 
-        setSearchListener()
-        priorities_toggle.setOnClickListener { onPrioritiesToggle(it) }
     }
 
-    private fun onPrioritiesToggle(it: View) {
-        val checkBox = it as CheckBox
-        viewModel.setPriorityOrder(checkBox.isChecked)
-    }
 
-    private fun setSearchListener() {
-        search_field.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-            }
 
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.setNameFilter(p0.toString())
-            }
-        })
-    }
 
     private fun updateAdapter(habits: List<Habit>) {
         (viewAdapter as HabitListAdapter).habits = habits.toMutableList()
