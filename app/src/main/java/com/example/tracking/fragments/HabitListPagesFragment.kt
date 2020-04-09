@@ -7,12 +7,18 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.example.tracking.HabitsPagerAdapter
 import com.example.tracking.R
+import com.example.tracking.dataBase.dbProviders.HabitsProvider
+import com.example.tracking.viewModels.HabitListViewModel
 import kotlinx.android.synthetic.main.habit_pages_fragment.*
 
 
 class HabitListPagesFragment() : Fragment() {
+    private lateinit var viewModel: HabitListViewModel
     lateinit var callback: HabitListPagesCallback
 
     companion object {
@@ -41,6 +47,18 @@ class HabitListPagesFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.let {
+            viewModel = ViewModelProvider(activity!!, object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return HabitListViewModel(
+
+                        viewLifecycleOwner,
+                        HabitsProvider
+                    ) as T
+                }
+            }).get(HabitListViewModel::class.java)
+        }
+
         add_habit_btn.setOnClickListener { createNewHabit(it) }
         if (habits_view_pager.adapter == null) {
             habits_view_pager.adapter = HabitsPagerAdapter(

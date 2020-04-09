@@ -12,10 +12,11 @@ import android.widget.CheckBox
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracking.*
-import com.example.tracking.dataBase.providers.HabitsProvider
+import com.example.tracking.dataBase.dbProviders.HabitsProvider
 import com.example.tracking.viewModels.HabitListViewModel
 import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.habit_list.*
@@ -64,15 +65,15 @@ class HabitListFragment() : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return HabitListViewModel(
-                    arguments!!.getInt(HABIT_TYPE_KEY),
-                    viewLifecycleOwner,
-                    HabitsProvider
-                ) as T
-            }
-        }).get(HabitListViewModel::class.java)
+        activity?.let {
+            viewModel = ViewModelProvider(activity!!, object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return HabitListViewModel(
+                        viewLifecycleOwner,
+                        HabitsProvider
+                    ) as T
+                }
+            }).get(HabitListViewModel::class.java)}
         viewManager = LinearLayoutManager(activity)
         viewAdapter = HabitListAdapter(
             mutableListOf(),
@@ -85,9 +86,17 @@ class HabitListFragment() : Fragment(),
             layoutManager = viewManager
             adapter = viewAdapter
         }
-        viewModel.habits.observe(viewLifecycleOwner, Observer { list ->
-            updateAdapter(list)
-        })
+        val type = arguments!!.getInt(HABIT_TYPE_KEY);
+        if (type == 0) {
+            viewModel.habitsType0.observe(viewLifecycleOwner, Observer { list ->
+                updateAdapter(list)
+            })
+        } else {
+            viewModel.habitsType1.observe(viewLifecycleOwner, Observer { list ->
+                updateAdapter(list)
+            })
+        }
+
         setSearchListener()
         priorities_toggle.setOnClickListener { onPrioritiesToggle(it) }
     }

@@ -1,4 +1,4 @@
-package com.example.tracking.dataBase.providers
+package com.example.tracking.dataBase.dbProviders
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

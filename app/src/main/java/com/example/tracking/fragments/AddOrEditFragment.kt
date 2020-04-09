@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.tracking.Habit
 import com.example.tracking.R
-import com.example.tracking.dataBase.providers.HabitsProvider
+import com.example.tracking.dataBase.dbProviders.HabitsProvider
 import com.example.tracking.viewModels.AddOrEditViewModel
 import kotlinx.android.synthetic.main.add_or_edit_fragment.*
 

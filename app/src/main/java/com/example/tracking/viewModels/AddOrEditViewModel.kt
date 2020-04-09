@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tracking.Habit
-import com.example.tracking.dataBase.providers.IHabitProvider
+import com.example.tracking.dataBase.dbProviders.IHabitProvider
 
 class AddOrEditViewModel(private val habitProvider: IHabitProvider) : ViewModel() {
     constructor(habit: Habit, habitProvider: IHabitProvider) : this(habitProvider) {

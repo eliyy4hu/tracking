@@ -7,8 +7,8 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.example.tracking.dataBase.AppDatabase
-import com.example.tracking.dataBase.providers.HabitsProvider
-import com.example.tracking.dataBase.providers.IHabitProvider
+import com.example.tracking.dataBase.dbProviders.HabitsProvider
+import com.example.tracking.dataBase.dbProviders.IHabitProvider
 import com.example.tracking.fragments.*
 import kotlinx.android.synthetic.main.nav_bar.*
 
