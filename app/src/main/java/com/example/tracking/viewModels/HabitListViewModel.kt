@@ -8,7 +8,6 @@ import java.util.*
 
 class HabitListViewModel(
     //private val habitType: Int,
-    private val viewLifecycleOwner: LifecycleOwner,
     private val habitProvider: IHabitProvider
 ) :
     ViewModel() {
@@ -20,7 +19,7 @@ class HabitListViewModel(
     var orderByPriority: Boolean = false
 
     init {
-        habitProvider.habits.observe(viewLifecycleOwner, Observer { habits ->
+        habitProvider.habits.observeForever( Observer { habits ->
             updateHabits(habits)
         })
 

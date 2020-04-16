@@ -12,7 +12,6 @@ import android.widget.CheckBox
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.example.tracking.HabitsPagerAdapter
 import com.example.tracking.R
 import com.example.tracking.dataBase.dbProviders.HabitsProvider
@@ -55,13 +54,14 @@ class HabitListPagesFragment() : Fragment() {
             viewModel = ViewModelProvider(activity!!, object : ViewModelProvider.Factory {
                 override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                     return HabitListViewModel(
-
-                        activity!!,
                         HabitsProvider
                     ) as T
                 }
             }).get(HabitListViewModel::class.java)
         }
+        //resetFilters()
+        //viewModel.setPriorityOrder(false)
+        //viewModel.setNameFilter("")
 
         add_habit_btn.setOnClickListener { createNewHabit(it) }
         if (habits_view_pager.adapter == null) {
@@ -75,9 +75,13 @@ class HabitListPagesFragment() : Fragment() {
         }
         setSearchListener()
         priorities_toggle.setOnClickListener { onPrioritiesToggle(it) }
-
-
     }
+
+    private fun resetFilters() {
+        search_field.setText("")
+        priorities_toggle.isChecked = false
+    }
+
     private fun setSearchListener() {
         search_field.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -91,12 +95,16 @@ class HabitListPagesFragment() : Fragment() {
             }
         })
     }
+
     private fun onPrioritiesToggle(it: View) {
         val checkBox = it as CheckBox
         viewModel.setPriorityOrder(checkBox.isChecked)
     }
 
     private fun createNewHabit(view: View) {
+        viewModel.setNameFilter("")
+        viewModel.setPriorityOrder(false)
+        search_field.setText("")
         callback.onCreateHabit()
     }
 }

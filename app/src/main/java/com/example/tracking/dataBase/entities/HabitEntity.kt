@@ -9,35 +9,7 @@ import java.util.*
 
 @Entity(tableName = "habit_items")
 data class HabitEntity(
+    @Embedded val habit: Habit,
     @PrimaryKey
-    var id: String,
-    @ColumnInfo(name = "name")
-    var name: String,
-    @ColumnInfo(name = "description")
-    var description: String,
-    @ColumnInfo(name = "priority")
-    var priority: Int,
-    @ColumnInfo(name = "type")
-    var type: Int,
-    @ColumnInfo(name = "frequency")
-    var frequency: String
-) {
-    constructor(habit: Habit) : this(
-        habit.id.toString(),
-        habit.name,
-        habit.description,
-        habit.priority,
-        habit.type,
-        habit.frequency
+    val key: String = habit.id
     )
-    fun toHabit(): Habit {
-        var habit = Habit()
-        habit.name = name
-        habit.id = UUID.fromString(id)
-        habit.priority = priority
-        habit.description = description
-        habit.type = type
-        habit.frequency = frequency
-        return habit
-    }
-}

@@ -27,7 +27,7 @@ class Habit : Parcelable {
     var priority: Int = 0
     var type: Int = 0
     var frequency: String = ""
-    var id: UUID = UUID.randomUUID()
+    var id: String = UUID.randomUUID().toString()
 
     constructor(parcel: Parcel) : this() {
         name = parcel.readString()?: ""

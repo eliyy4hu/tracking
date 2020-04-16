@@ -26,7 +26,7 @@ class MainActivity() : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.nav_bar)
-        setDb(HabitsProvider)
+        setDb(HabitsProvider) //todo application class
         setActionBar()
         if (savedInstanceState == null) {
             val habitListPagesFragment: HabitListPagesFragment =
@@ -45,7 +45,9 @@ class MainActivity() : AppCompatActivity(),
         val db = Room.databaseBuilder(
             this,
             AppDatabase::class.java, "habits.db"
-        ).allowMainThreadQueries().build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
         habitProvider.setDb(db, this)
     }
 

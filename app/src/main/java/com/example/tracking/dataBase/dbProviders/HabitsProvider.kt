@@ -22,7 +22,7 @@ object HabitsProvider : IHabitProvider {
     private lateinit var habitDao: HabitDao
 
     private fun updateHabits(habits: List<HabitEntity>?) {
-        HabitsProvider.habits.postValue(habits?.map { it.toHabit() }?.toMutableList())
+        HabitsProvider.habits.postValue(habits?.map { it.habit }?.toMutableList())
     }
 
     override fun addHabit(habit: Habit) {

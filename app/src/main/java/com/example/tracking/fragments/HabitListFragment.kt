@@ -69,7 +69,6 @@ class HabitListFragment() : Fragment(),
             viewModel = ViewModelProvider(activity!!, object : ViewModelProvider.Factory {
                 override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                     return HabitListViewModel(
-                        activity!!,
                         HabitsProvider
                     ) as T
                 }
@@ -100,15 +99,14 @@ class HabitListFragment() : Fragment(),
     }
 
 
-
-
-
     private fun updateAdapter(habits: List<Habit>) {
         (viewAdapter as HabitListAdapter).habits = habits.toMutableList()
         viewAdapter.notifyDataSetChanged()
     }
 
     override fun recyclerViewListClicked(v: View?, position: Int) {
+        viewModel.setNameFilter("")
+        viewModel.setPriorityOrder(false)
         callback.onEdit((viewAdapter as HabitListAdapter).habits[position])
     }
 }
