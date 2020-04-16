@@ -60,7 +60,6 @@ class MainActivity() : AppCompatActivity(),
 
     private fun openRootFragment(fragment: Fragment) {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_burger)
-        clearBackStack()
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.fragment_container,
@@ -83,12 +82,6 @@ class MainActivity() : AppCompatActivity(),
     override fun onBackPressed() {
         super.onBackPressed()
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_burger)
-    }
-
-    private fun clearBackStack() {
-        for (i in 0 until supportFragmentManager.backStackEntryCount) {
-            supportFragmentManager.popBackStack()
-        }
     }
 
     override fun onCreateHabit() {

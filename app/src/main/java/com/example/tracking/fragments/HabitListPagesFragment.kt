@@ -59,9 +59,6 @@ class HabitListPagesFragment() : Fragment() {
                 }
             }).get(HabitListViewModel::class.java)
         }
-        //resetFilters()
-        //viewModel.setPriorityOrder(false)
-        //viewModel.setNameFilter("")
 
         add_habit_btn.setOnClickListener { createNewHabit(it) }
         if (habits_view_pager.adapter == null) {
@@ -104,7 +101,6 @@ class HabitListPagesFragment() : Fragment() {
     private fun createNewHabit(view: View) {
         viewModel.setNameFilter("")
         viewModel.setPriorityOrder(false)
-        search_field.setText("")
         callback.onCreateHabit()
     }
 }
